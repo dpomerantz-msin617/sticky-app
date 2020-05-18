@@ -1,0 +1,10 @@
+.Note {
+    background-color: white;
+    margin: 25px;
+    min-height: 6em;
+}
+
+.Note h3{
+    position: relative;
+    float: left;
+}
