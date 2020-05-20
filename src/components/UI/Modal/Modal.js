@@ -8,7 +8,6 @@ class Modal extends Component {
         return nextProps.show !==this.props.show || nextProps.chilrden !== this.props.children;
     }
     render() {
-        console.log('SHOWING MODAL');
         return(
             <Aux>
             <Backdrop show={this.props.show} clicked={this.props.modalClosed}/>
