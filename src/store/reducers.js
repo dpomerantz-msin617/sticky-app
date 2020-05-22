@@ -1,7 +1,19 @@
 import * as actionTypes from './actions';
 
 const initialState = {
-    boards: [],
+    boards: [
+        {
+            name: 'My sticky note board',
+            lists: [{name: 'This is the first list!',
+                    notes: [{title: 'Note 1',
+                            description: 'Despription for Note 1.....'},
+                            {title: 'Note 2',
+                            description: 'Despription for Note 2.....'},
+                            {title: 'Note 3',
+                            description: 'Despription for Note 3.....'}
+                  ]}]
+          }
+    ],
     lists: [],
     notes: []
 };
