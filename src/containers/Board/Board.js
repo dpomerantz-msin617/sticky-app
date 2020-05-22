@@ -15,7 +15,8 @@ class Board extends Component {
         const title = <TextField id="standard-basic" fullWidth disabled={!this.props.board.editing}
                                             label="Board Title" defaultValue={this.props.board.name}/>;
         const editToggleBtn = (this.props.board.editing) ? 
-                <CheckIcon /> : <EditIcon onClick={() => this.props.onEditBoard(true, 1)} fontSize="small"/>;
+                <CheckIcon onClick={this.props.onUpdateTitle} /> : 
+                <EditIcon onClick={() => this.props.onEditBoard(1)} fontSize="small"/>;
         return (
             <div className={classes.Board}> 
                 {title}
@@ -38,8 +39,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onUpdateTitle: (board) => dispatch({type: actionTypes.UPDATE_BOARD, board: board}),
-        onEditBoard: (edit, id) => dispatch({type: actionTypes.EDIT_BOARD, edit: edit, id: id}),
+        onUpdateTitle: (title, id) => dispatch({type: actionTypes.UPDATE_BOARD_TITLE, id: id, title: title}),
+        onEditBoard: (id) => dispatch({type: actionTypes.EDIT_BOARD, id: id}),
         onAddList: (id) => dispatch({type: actionTypes.ADD_LIST, id: id})
     }
 }

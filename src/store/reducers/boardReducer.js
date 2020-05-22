@@ -68,25 +68,36 @@ const reducer = (state = initialState, action) => {
             };
         case actionTypes.EDIT_BOARD:
             console.log('ID ', action);
-            let board = {...state.boards.byIds[action.id],
-                         editing : action.edit
-            }
-            const updatedboards = {
-                ...state.boards.byIds,
-                [action.id]: board
-            }
+            const editingBoards = updateBoards(state, action.id, 'editing', true);
             return {
                 ...state,
-                boards: {
-                    allIds: [...state.boards.allIds],
-                    byIds: updatedboards
-                }
+                boards: editingBoards
             };
-
+        case actionTypes.UPDATE_BOARD_TITLE:
+            console.log('ID ', action);
+            const updatedBoards = updateBoards(state, action.id, 'title', action.title);
+            return {
+                ...state,
+                boards: updatedBoards
+            };
         default:
             return state;
     }
 };
+
+export function updateBoards(state, id, propertyName, propertyValue){
+    let board = {...state.boards.byIds[id],
+            [propertyName] : propertyValue
+    }
+    console.log(board);
+    return {
+        allIds: [...state.boards.allIds],
+        byIds: {
+                ...state.boards.byIds,
+                [id]: board
+        }
+    }
+}
 
 export function insertItem(array, action) {
     return [
