@@ -7,3 +7,4 @@ export const UPDATE_BOARD = 'UPDATE_BOARD';
 export const REMOVE_BOARD = 'REMOVE_BOARD';
 
 export const EDIT_BOARD = 'EDIT_BOARD';
+export const ADD_LIST = 'ADD_LIST';
