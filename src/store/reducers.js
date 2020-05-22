@@ -3,7 +3,9 @@ import * as actionTypes from './actions';
 const initialState = {
     boards: [
         {
+            id: '1',
             name: 'My sticky note board',
+            editing: false,
             lists: [{name: 'This is the first list!',
                     notes: [{title: 'Note 1',
                             description: 'Despription for Note 1.....'},
@@ -40,10 +42,33 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 notes: [...notesToUpdate]
+            };
+        case actionTypes.EDIT_BOARD:
+            let boardIndex = state.boards.findIndex(b => b.id === action.id);
+            let board = {...state.boards[boardIndex],
+                         editing : action.edit
             }
+            const updatedboards = [...state.boards.splice(boardIndex, 1, board)];
+            return {
+                ...state,
+                boards: updatedboards
+            };
+
         default:
             return state;
     }
 };
+
+export function insertItem(array, action) {
+    return [
+      ...array.slice(0, action.index),
+      action.item,
+      ...array.slice(action.index)
+    ]
+  }
+
+ export function removeItem(array, action) {
+    return [...array.slice(0, action.index), ...array.slice(action.index + 1)]
+  }
 
 export default reducer;
