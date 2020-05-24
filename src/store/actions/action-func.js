@@ -43,7 +43,24 @@ export const initBoards = () => {
     }
 }
 
-export const fetchDataFailed = () => {
+export const loadUpdateBoardTitle = (id, board, title) => {
+    const updatedBoard = {...board,
+                          editing: false,
+                          name: title};
+    const newUrl = 'https://sticky-note-organizer.firebaseio.com/data/boards/' + id+ '.json';
+    return dispatch => {
+        axios.put(newUrl, updatedBoard)
+        .then( res => {
+            dispatch({type: actions.UPDATE_BOARD_TITLE, id: id, title: title});
+        })
+        .catch(error => {
+            dispatch(fetchDataFailed);
+        });
+    }
+};
+
+export const fetchDataFailed = (error) => {
+    console.log(error);
     return {
         type: actions.FETCH_DATA_FAILED
     };

@@ -110,16 +110,12 @@ const reducer = (state = initialState, action) => {
 };
 
 export function updateBoards(state, id, propertyName, propertyValue){
-    let board = {...state.boards.byIds[id],
+    let board = {...state.boards[id],
             [propertyName] : propertyValue
     }
-    console.log(board);
     return {
-        allIds: [...state.boards.allIds],
-        byIds: {
-                ...state.boards.byIds,
-                [id]: board
-        }
+        ...state.boards,
+        [id]: board
     }
 }
 

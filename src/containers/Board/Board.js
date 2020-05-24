@@ -13,10 +13,13 @@ import classes from './Board.module.css';
 class Board extends Component {
     constructor(props){
         super(props);
-        this.state = {title: ''};
+        this.state = {
+            boardId: 0,
+            title: ''
+        };
     }
 
-    componentWillMount () {
+    componentDidMount () {
         this.props.onInitBoards();
       }
 
@@ -30,8 +33,8 @@ class Board extends Component {
             label="Board Title" defaultValue={this.props.board.name}
             onChange={this.updateTitle}/>;
             const editToggleBtn = (this.props.board.editing) ? 
-            <CheckIcon onClick={() => this.props.onUpdateTitle(1, this.state.title)} /> : 
-            <EditIcon onClick={() => this.props.onEditBoard(1)} fontSize="small"/>;
+            <CheckIcon onClick={() => this.props.onUpdateTitle(this.state.boardId, this.props.board, this.state.title)} /> : 
+            <EditIcon onClick={() => this.props.onEditBoard(this.state.boardId)} fontSize="small"/>;
             return (
             <div className={classes.Board}> 
             {title}
@@ -41,7 +44,7 @@ class Board extends Component {
                 return <List list={this.props.lists[key]} key={key}></List>
                 })
             }
-            <AddIcon onClick={() => this.props.onAddList(1)}/>
+            <AddIcon onClick={() => this.props.onAddList(this.state.boardId)}/>
             </div>
             );        
         } else {
@@ -73,7 +76,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onInitBoards: () => dispatch(actionFunctions.initBoards()),
-        onUpdateTitle: (id, title) => dispatch({type: actionTypes.UPDATE_BOARD_TITLE, id: id, title: title}),
+        onUpdateTitle: (id, board, title) => dispatch(actionFunctions.loadUpdateBoardTitle(id, board, title)),
         onEditBoard: (id) => dispatch({type: actionTypes.EDIT_BOARD, id: id}),
         onAddList: (id) => dispatch({type: actionTypes.ADD_LIST, id: id})
     }
