@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classes from './Note.module.css';
 import Modal from '../../components/UI/Modal/Modal';
 import Aux from '../../hoc/aux-div';
-import * as actionTypes from '../../store/actions';
+import * as actionTypes from '../../store/actions/actions';
 import {connect} from 'react-redux';
 
 import EditIcon from '@material-ui/icons/Edit';
