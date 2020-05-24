@@ -74,11 +74,26 @@ const reducer = (state = initialState, action) => {
                 boards: editingBoards
             };
         case actionTypes.UPDATE_BOARD_TITLE:
-            console.log('ID ', action);
-            const updatedBoards = updateBoards(state, action.id, 'title', action.title);
+            let updatedBoards = updateBoards(state, action.id, 'title', action.title);
+            updatedBoards = updateBoards(state, action.id, 'editing', false);
             return {
                 ...state,
                 boards: updatedBoards
+            };
+        case actionTypes.ADD_LIST:
+            let boardsWithList = {...state.boards.byIds,
+                        [action.id]: {
+                            ...state.boards.byIds[action.id],
+                            lists: [...state.boards.byIds[action.id].lists,
+                                    {name: 'List 2',
+                                     notes: []
+                                    }]}};       
+            return {
+                ...state,
+                boards: {
+                    allIds: [...state.boards.allIds],
+                    byIds: {...boardsWithList}
+                }
             };
         default:
             return state;
