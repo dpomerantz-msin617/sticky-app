@@ -25,7 +25,6 @@ class Board extends Component {
         this.setState({title: event.target.value});
     }
     render() {
-        const lists = Object.assign();
         if(this.props.loaded){
             const title = <TextField id="standard-basic" fullWidth disabled={!this.props.board.editing}
             label="Board Title" defaultValue={this.props.board.name}
@@ -38,9 +37,9 @@ class Board extends Component {
             {title}
             {editToggleBtn}
             {
-            Object.key(this.props.lists).map(key, index) => {
-            return <List list={this.props.lists[index]} key={key}></List>
-            })
+                Object.keys(this.props.lists).map((key) => {
+                return <List list={this.props.lists[key]} key={key}></List>
+                })
             }
             <AddIcon onClick={() => this.props.onAddList(1)}/>
             </div>
@@ -55,28 +54,15 @@ const mapStateToProps = state => {
     console.log('State', state);
     if(state.boards[0]){
         const board = {...state.boards[0]};
-        const lists = [...board.lists].map((i, index) => {
-                console.log('List Item: ', index);
-                console.log('Item: ', state.lists[index]);
-                return {[index] : {...state.lists[index]}};
-            });
-        // const lists = Object.assign({}, ); [...board.lists].map((i, index) => {
-        //     console.log('List Item: ', index);
-        //     console.log('Item: ', state.lists[index]);
-        //     return Object.assign({}, state.lists[index]);
-        //     // return {[index] : {...state.lists[index]}};
-        // });
+        const lists = Object.assign({}, [...board.lists].map((i, index) => {
+            return {...state.lists[index]};
+          })
+        );
         console.log(board);
         console.log(lists)
         return {
             board: board,
             lists: lists,
-            // lists: ...state.boards[0].lists.map((i, index) => {
-            //     console.log('List Item: ', index);
-            //     console.log('Item: ', state.lists[index]);
-            //     return {[index] : Object.assign({}, state.lists[index])};
-            // }),
-            // lists: state.lists.filter(state.boards[0].lists)
             loaded: state.loaded
         }
     } else {
