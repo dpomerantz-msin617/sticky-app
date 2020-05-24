@@ -10,3 +10,4 @@ export const EDIT_BOARD = 'EDIT_BOARD';
 export const ADD_LIST = 'ADD_LIST';
 
 export const SET_DATA = 'SET_DATA';
+export const FETCH_DATA_FAILED = 'FETCH_DATA_FAILED';

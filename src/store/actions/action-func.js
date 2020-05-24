@@ -31,12 +31,19 @@ export const addList = boardId => {
 
 export const initBoards = () => {
     console.log('About to get orders: ');
-    return axios.get('https://sticky-note-organizer.firebaseio.com/boards.json')
-            .then( res => {
-                console.log('Results: ', res);
-                return {type: actions.SET_DATA, data: res.data};
-            })
-            .catch(error => {
-                // dispatch(fetchIngredientsFailed());
-            });
+    return dispatch => {
+        axios.get('https://sticky-note-organizer.firebaseio.com/boards.json')
+        .then( res => {
+            dispatch({type: actions.SET_DATA, data: res.data});
+        })
+        .catch(error => {
+            dispatch(fetchDataFailed());
+        });
+    }
 }
+
+export const fetchDataFailed = () => {
+    return {
+        type: actions.FETCH_DATA_FAILED
+    };
+};
