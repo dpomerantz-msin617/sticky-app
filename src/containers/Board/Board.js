@@ -43,7 +43,7 @@ class Board extends Component {
 const mapStateToProps = state => {
     console.log('State', state);
     return {
-        board: state.boards.byIds[1]
+        board: state.boards[1]
     }
 }
 

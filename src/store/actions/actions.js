@@ -8,3 +8,5 @@ export const REMOVE_BOARD = 'REMOVE_BOARD';
 
 export const EDIT_BOARD = 'EDIT_BOARD';
 export const ADD_LIST = 'ADD_LIST';
+
+export const SET_DATA = 'SET_DATA';

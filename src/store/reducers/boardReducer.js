@@ -1,6 +1,5 @@
 import * as actionTypes from '../actions/actions';
 
-
 const initialState = {
     boards: {
         1 :{    name: 'My sticky note board',
@@ -19,8 +18,19 @@ const initialState = {
     notes: []
 };
 
+// const initialState = {
+//     boards: {},
+//     lists: {},
+//     notes: {}
+// };
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
+        case actionTypes.SET_DATA:
+            console.log('Date: ', action.data);
+            return {
+                ...action.data
+            }
         case actionTypes.ADD_NOTE:
             return {
                 ...state,

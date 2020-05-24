@@ -1,4 +1,5 @@
-import axios from '../../../axios-orders';
+import * as actions from './actions';
+import axios from '../../axios-data';
 
 export const addList = boardId => {
     const state = {boards: {
@@ -18,7 +19,7 @@ export const addList = boardId => {
                 }
             }
         }};
-    axios.post( '/orders.json', state )
+    axios.post( '/list.json', state )
     .then( response => {
         this.setState( { loading: false } );
         this.props.history.push( '/' );
@@ -27,3 +28,15 @@ export const addList = boardId => {
         this.setState( { loading: false } );
     } );
 };
+
+export const initBoards = () => {
+    console.log('About to get orders: ');
+    return axios.get('https://sticky-note-organizer.firebaseio.com/boards.json')
+            .then( res => {
+                console.log('Results: ', res);
+                return {type: actions.SET_DATA, data: res.data};
+            })
+            .catch(error => {
+                // dispatch(fetchIngredientsFailed());
+            });
+}
