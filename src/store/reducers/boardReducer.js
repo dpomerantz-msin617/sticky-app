@@ -22,6 +22,7 @@ const initialState = {
     boards: {},
     lists: {},
     notes: {},
+    loaded: false, 
     error: false
 };
 
@@ -29,8 +30,29 @@ const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.SET_DATA:
             console.log('Date: ', action.data);
+            // const boards = mapArrayToObject(action.data.boards);
+            const boards = Object.assign({}, [...action.data.boards]);
+            //const lists = (action.data.lists) ? Object.assign({}, [...action.data.lists]) : {};
+            //const notes = (action.data.notes) ? Object.assign({}, [...action.data.notes]) : {};
+            console.log(boards);
+            // {...action.data.boards.map((b, index) => {
+
+            // })};
             return {
-                ...action.data
+                boards : {...boards},
+                lists: {
+                    0:{
+                        name: 'This is the first list!',
+                        notes: [{title: 'Note 1',
+                                description: 'Despription for Note 1.....'},
+                                {title: 'Note 2',
+                                description: 'Despription for Note 2.....'},
+                                {title: 'Note 3',
+                                description: 'Despription for Note 3.....'}
+                        ]},
+                 //   ...lists
+                },
+                loaded: true
             }
         case actionTypes.ADD_NOTE:
             return {

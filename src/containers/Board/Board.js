@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import * as actionTypes from '../../store/actions/actions';
+import * as actionFunctions from '../../store/actions/action-func';
 import { connect } from 'react-redux';
 import EditIcon from '@material-ui/icons/Edit';
 import TextField from '@material-ui/core/TextField';
@@ -14,41 +15,78 @@ class Board extends Component {
         super(props);
         this.state = {title: ''};
     }
+
+    componentWillMount () {
+        this.props.onInitBoards();
+      }
+
     updateTitle = event => {
         console.log(event.target.value);
         this.setState({title: event.target.value});
     }
     render() {
-        const title = <TextField id="standard-basic" fullWidth disabled={!this.props.board.editing}
-                                            label="Board Title" defaultValue={this.props.board.name}
-                                            onChange={this.updateTitle}/>;
-        const editToggleBtn = (this.props.board.editing) ? 
-                <CheckIcon onClick={() => this.props.onUpdateTitle(1, this.state.title)} /> : 
-                <EditIcon onClick={() => this.props.onEditBoard(1)} fontSize="small"/>;
-        return (
+        const lists = Object.assign();
+        if(this.props.loaded){
+            const title = <TextField id="standard-basic" fullWidth disabled={!this.props.board.editing}
+            label="Board Title" defaultValue={this.props.board.name}
+            onChange={this.updateTitle}/>;
+            const editToggleBtn = (this.props.board.editing) ? 
+            <CheckIcon onClick={() => this.props.onUpdateTitle(1, this.state.title)} /> : 
+            <EditIcon onClick={() => this.props.onEditBoard(1)} fontSize="small"/>;
+            return (
             <div className={classes.Board}> 
-                {title}
-                {editToggleBtn}
+            {title}
+            {editToggleBtn}
             {
-                this.props.board.lists.map((list, index) => {
-                    return <List list={list}></List>
-                })
+            Object.key(this.props.lists).map(key, index) => {
+            return <List list={this.props.lists[index]} key={key}></List>
+            })
             }
             <AddIcon onClick={() => this.props.onAddList(1)}/>
             </div>
             );        
+        } else {
+            return <h2>LOADING...</h2>
+        }
     }
 }
 
 const mapStateToProps = state => {
     console.log('State', state);
-    return {
-        board: state.boards[1]
+    if(state.boards[0]){
+        const board = {...state.boards[0]};
+        const lists = [...board.lists].map((i, index) => {
+                console.log('List Item: ', index);
+                console.log('Item: ', state.lists[index]);
+                return {[index] : {...state.lists[index]}};
+            });
+        // const lists = Object.assign({}, ); [...board.lists].map((i, index) => {
+        //     console.log('List Item: ', index);
+        //     console.log('Item: ', state.lists[index]);
+        //     return Object.assign({}, state.lists[index]);
+        //     // return {[index] : {...state.lists[index]}};
+        // });
+        console.log(board);
+        console.log(lists)
+        return {
+            board: board,
+            lists: lists,
+            // lists: ...state.boards[0].lists.map((i, index) => {
+            //     console.log('List Item: ', index);
+            //     console.log('Item: ', state.lists[index]);
+            //     return {[index] : Object.assign({}, state.lists[index])};
+            // }),
+            // lists: state.lists.filter(state.boards[0].lists)
+            loaded: state.loaded
+        }
+    } else {
+        return null;
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
+        onInitBoards: () => dispatch(actionFunctions.initBoards()),
         onUpdateTitle: (id, title) => dispatch({type: actionTypes.UPDATE_BOARD_TITLE, id: id, title: title}),
         onEditBoard: (id) => dispatch({type: actionTypes.EDIT_BOARD, id: id}),
         onAddList: (id) => dispatch({type: actionTypes.ADD_LIST, id: id})

@@ -32,8 +32,9 @@ export const addList = boardId => {
 export const initBoards = () => {
     console.log('About to get orders: ');
     return dispatch => {
-        axios.get('https://sticky-note-organizer.firebaseio.com/boards.json')
+        axios.get('https://sticky-note-organizer.firebaseio.com/data.json')
         .then( res => {
+            console.log('Data', res.data);
             dispatch({type: actions.SET_DATA, data: res.data});
         })
         .catch(error => {
