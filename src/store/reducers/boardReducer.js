@@ -3,10 +3,7 @@ import * as actionTypes from '../actions/actions';
 
 const initialState = {
     boards: {
-        allIds: [1],
-        byIds: {
-            1: {
-                name: 'My sticky note board',
+        1 :{    name: 'My sticky note board',
                 editing: false,
                 lists: [{name: 'This is the first list!',
                         notes: [{title: 'Note 1',
@@ -15,33 +12,12 @@ const initialState = {
                                 description: 'Despription for Note 2.....'},
                                 {title: 'Note 3',
                                 description: 'Despription for Note 3.....'}
-                      ]}]
-                }
+                        ]}]
             }
         },
     lists: [],
     notes: []
 };
-
-// const initialState = {
-//     boards: [
-//         {
-//             id: '1',
-//             name: 'My sticky note board',
-//             editing: false,
-//             lists: [{name: 'This is the first list!',
-//                     notes: [{title: 'Note 1',
-//                             description: 'Despription for Note 1.....'},
-//                             {title: 'Note 2',
-//                             description: 'Despription for Note 2.....'},
-//                             {title: 'Note 3',
-//                             description: 'Despription for Note 3.....'}
-//                   ]}]
-//           }
-//     ],
-//     lists: [],
-//     notes: []
-// };
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
