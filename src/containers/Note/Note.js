@@ -69,7 +69,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAddNote: (note) => dispatch({type: actionTypes.ADD_NOTE, note: note}),
         onUpdateNote: (note) => dispatch({type: actionTypes.UPDATE_NOTE, note: note}),
         onRemoveNote: (noteId) => dispatch({type: actionTypes.REMOVE_NOTE, noteId: noteId})
     }

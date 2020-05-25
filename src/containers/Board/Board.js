@@ -41,7 +41,7 @@ class Board extends Component {
             {editToggleBtn}
             {
                 Object.keys(this.props.lists).map((key) => {
-                return <List list={this.props.lists[key]} key={key}></List>
+                if(this.props.lists[key]) return <List list={this.props.lists[key]} key={key}></List>
                 })
             }
             <AddIcon onClick={() => this.props.onAddList(this.state.boardId)}/>

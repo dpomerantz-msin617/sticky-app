@@ -30,11 +30,9 @@ export const addList = boardId => {
 };
 
 export const initBoards = () => {
-    console.log('About to get orders: ');
     return dispatch => {
         axios.get('https://sticky-note-organizer.firebaseio.com/data.json')
         .then( res => {
-            console.log('Data', res.data);
             dispatch({type: actions.SET_DATA, data: res.data});
         })
         .catch(error => {
@@ -59,8 +57,26 @@ export const loadUpdateBoardTitle = (id, board, title) => {
     }
 };
 
+export const addNote = (listId, list) => {
+    const url = 'https://sticky-note-organizer.firebaseio.com/data/';
+    const sampleName = 'New Note'
+    return dispatch => {
+        axios.post(url+'notes.json', {name: sampleName})
+        .then( res => {
+            const updatedList = {
+                ...list,
+                notes: [...list.notes, res.data.name]
+            };
+            axios.put(url+'lists/'+ listId +'.json', updatedList);
+            dispatch({type: actions.ADD_NOTE, listId: listId, id: res.data.name, name: sampleName});
+        })
+        .catch(error => {
+            dispatch(fetchDataFailed);
+        });
+    }
+};
+
 export const fetchDataFailed = (error) => {
-    console.log(error);
     return {
         type: actions.FETCH_DATA_FAILED
     };

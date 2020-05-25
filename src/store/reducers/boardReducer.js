@@ -29,37 +29,13 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.SET_DATA:
-            console.log('Date: ', action.data);
-            // const boards = mapArrayToObject(action.data.boards);
             const boards = Object.assign({}, [...action.data.boards]);
-            //const lists = (action.data.lists) ? Object.assign({}, [...action.data.lists]) : {};
-            //const notes = (action.data.notes) ? Object.assign({}, [...action.data.notes]) : {};
-            console.log(boards);
-            // {...action.data.boards.map((b, index) => {
-
-            // })};
+            const lists = (action.data.lists) ? Object.assign({}, [...action.data.lists]) : {};
             return {
                 boards : {...boards},
-                lists: {
-                    0:{
-                        name: 'This is the first list!',
-                        notes: [{title: 'Note 1',
-                                description: 'Despription for Note 1.....'},
-                                {title: 'Note 2',
-                                description: 'Despription for Note 2.....'},
-                                {title: 'Note 3',
-                                description: 'Despription for Note 3.....'}
-                        ]},
-                 //   ...lists
-                },
+                lists: {...lists},
                 loaded: true
             }
-        case actionTypes.ADD_NOTE:
-            return {
-                ...state,
-                notes: [...state.notes,
-                        action.note]
-            };
         case actionTypes.UPDATE_NOTE:
             console.log('updated note', action);
             const noteIndex = state.notes.findIndex(n => n.id === action.note.id);
@@ -104,7 +80,17 @@ const reducer = (state = initialState, action) => {
                     byIds: {...boardsWithList}
                 }
             };
-        default:
+//@TODO MOVE TO LIST REDUCER
+        case actionTypes.ADD_NOTE:
+            const noteList = {...state.notes, [action.id] : {name: action.name}}    
+            let listsToUpdate = {...state.lists};
+            listsToUpdate[action.listId].notes = [listsToUpdate[action.listId].notes,
+                                                  action.id]
+            return {...state,
+                    lists: {...listsToUpdate},
+                    notes: {...noteList}
+                }
+            default:
             return state;
     }
 };

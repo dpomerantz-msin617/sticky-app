@@ -1,15 +1,26 @@
 import React from 'react';
-import Note from '../Note/Note';
-import classes from './List.module.css';
+import { connect } from 'react-redux';
+import AddIcon from '@material-ui/icons/Add';
 
-const list = (props) => console.log(props) || (
+import classes from './List.module.css';
+import Note from '../Note/Note';
+import * as actionFunc from '../../store/actions/action-func';
+
+const List = (props) => console.log(props) || (
 <div className={classes.List}> This List is called: "{props.list.name}"
     {
         props.list.notes.map((note, i) => {
-            return <Note note={note}></Note>
+            return <Note note={note} key={i}></Note>
         })
     }
+    <AddIcon onClick={() => props.onAddList(props.list)}/>
 </div>
 );
 
-export default list;
+const mapDispatchToProps = dispatch => {
+    return {
+        onAddList: (list) => dispatch(actionFunc.addNote(list.id, list))
+    }
+}
+
+export default connect(null, mapDispatchToProps) (List);
