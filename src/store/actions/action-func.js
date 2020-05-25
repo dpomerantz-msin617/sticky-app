@@ -1,32 +1,23 @@
 import * as actions from './actions';
 import axios from '../../axios-data';
 
-export const addList = boardId => {
-    const state = {boards: {
-        allIds: [1],
-        byIds: {
-            1: {
-                name: 'My sticky note board',
-                editing: false,
-                lists: [{name: 'This is the first list!',
-                        notes: [{title: 'Note 1',
-                                description: 'Despription for Note 1.....'},
-                                {title: 'Note 2',
-                                description: 'Despription for Note 2.....'},
-                                {title: 'Note 3',
-                                description: 'Despription for Note 3.....'}
-                      ]}]
-                }
-            }
-        }};
-    axios.post( '/list.json', state )
-    .then( response => {
-        this.setState( { loading: false } );
-        this.props.history.push( '/' );
-    } )
-    .catch( error => {
-        this.setState( { loading: false } );
-    } );
+export const addList = (boardId, board) => {
+    const url = 'https://sticky-note-organizer.firebaseio.com/data/';
+    const sampleListName = 'New List';
+    return dispatch => axios.post(url + 'lists.json', {name: sampleListName} )
+        .then( res => {
+            const updatedBoard = {
+                ...board,
+                lists: [...board.lists, res.data.name]
+            };
+            axios.put(url + 'boards/'+boardId + '.json', updatedBoard).then(
+                dispatch({type: actions.ADD_LIST, boardId: boardId, listId: res.data.name, name: sampleListName})
+            ).catch(
+                dispatch(fetchDataFailed())
+        )})
+        .catch( error => {
+            dispatch(fetchDataFailed());
+        } );
 };
 
 export const initBoards = () => {
@@ -67,8 +58,13 @@ export const addNote = (listId, list) => {
                 ...list,
                 notes: [...list.notes, res.data.name]
             };
-            axios.put(url+'lists/'+ listId +'.json', updatedList);
-            dispatch({type: actions.ADD_NOTE, listId: listId, id: res.data.name, name: sampleName});
+            axios.put(url+'lists/'+ listId +'.json', updatedList)
+                 .then( res2 => dispatch({ type: actions.ADD_NOTE, 
+                                           listId: listId, 
+                                           id: res.data.name, 
+                                           name: sampleName})
+            )
+            .catch( error2 => dispatch(fetchDataFailed))
         })
         .catch(error => {
             dispatch(fetchDataFailed);

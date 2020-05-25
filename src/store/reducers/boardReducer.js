@@ -1,23 +1,5 @@
 import * as actionTypes from '../actions/actions';
 
-// const initialState = {
-//     boards: {
-//         1 :{    name: 'My sticky note board',
-//                 editing: false,
-//                 lists: [{name: 'This is the first list!',
-//                         notes: [{title: 'Note 1',
-//                                 description: 'Despription for Note 1.....'},
-//                                 {title: 'Note 2',
-//                                 description: 'Despription for Note 2.....'},
-//                                 {title: 'Note 3',
-//                                 description: 'Despription for Note 3.....'}
-//                         ]}]
-//             }
-//         },
-//     lists: [],
-//     notes: []
-// };
-
 const initialState = {
     boards: {},
     lists: {},
@@ -31,9 +13,11 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SET_DATA:
             const boards = Object.assign({}, [...action.data.boards]);
             const lists = (action.data.lists) ? Object.assign({}, [...action.data.lists]) : {};
+            const notes = (action.data.notes) ? Object.assign({}, [...action.data.notes]) : {};
             return {
                 boards : {...boards},
                 lists: {...lists},
+                notes: {...notes},
                 loaded: true
             }
         case actionTypes.UPDATE_NOTE:
@@ -52,7 +36,6 @@ const reducer = (state = initialState, action) => {
                 notes: [...notesToUpdate]
             };
         case actionTypes.EDIT_BOARD:
-            console.log('ID ', action);
             const editingBoards = updateBoards(state, action.id, 'editing', true);
             return {
                 ...state,
@@ -66,19 +49,16 @@ const reducer = (state = initialState, action) => {
                 boards: updatedBoards
             };
         case actionTypes.ADD_LIST:
-            let boardsWithList = {...state.boards.byIds,
-                        [action.id]: {
-                            ...state.boards.byIds[action.id],
-                            lists: [...state.boards.byIds[action.id].lists,
-                                    {name: 'List 2',
-                                     notes: []
-                                    }]}};       
+            const updatedLists = {...state.lists,
+                                 [action.listId]: {id: action.listId,
+                                                   name: action.name}};
+            let boardsToUpdate = {...state.boards};
+            boardsToUpdate[action.boardId].lists = [...boardsToUpdate[action.boardId].lists,
+                                                    action.listId];
             return {
                 ...state,
-                boards: {
-                    allIds: [...state.boards.allIds],
-                    byIds: {...boardsWithList}
-                }
+                boards: {...boardsToUpdate},
+                lists: {...updatedLists}
             };
 //@TODO MOVE TO LIST REDUCER
         case actionTypes.ADD_NOTE:

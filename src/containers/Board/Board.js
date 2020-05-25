@@ -44,7 +44,7 @@ class Board extends Component {
                 if(this.props.lists[key]) return <List list={this.props.lists[key]} key={key}></List>
                 })
             }
-            <AddIcon onClick={() => this.props.onAddList(this.state.boardId)}/>
+            <AddIcon onClick={() => this.props.onAddList(this.state.boardId, this.props.board)}/>
             </div>
             );        
         } else {
@@ -78,7 +78,7 @@ const mapDispatchToProps = dispatch => {
         onInitBoards: () => dispatch(actionFunctions.initBoards()),
         onUpdateTitle: (id, board, title) => dispatch(actionFunctions.loadUpdateBoardTitle(id, board, title)),
         onEditBoard: (id) => dispatch({type: actionTypes.EDIT_BOARD, id: id}),
-        onAddList: (id) => dispatch({type: actionTypes.ADD_LIST, id: id})
+        onAddList: (id, board) => dispatch(actionFunctions.addList(id, board))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps) (Board);
