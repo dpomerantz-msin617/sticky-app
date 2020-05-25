@@ -29,16 +29,17 @@ class Board extends Component {
     }
     render() {
         if(this.props.loaded){
-            const title = <TextField id="standard-basic" fullWidth disabled={!this.props.board.editing}
-            label="Board Title" defaultValue={this.props.board.name}
-            onChange={this.updateTitle}/>;
+            const title = <TextField fullWidth disabled={!this.props.board.editing}
+                                                        label="Board Title" defaultValue={this.props.board.name}
+                                                        onChange={this.updateTitle}/>;
             const editToggleBtn = (this.props.board.editing) ? 
-            <CheckIcon onClick={() => this.props.onUpdateTitle(this.state.boardId, this.props.board, this.state.title)} /> : 
-            <EditIcon onClick={() => this.props.onEditBoard(this.state.boardId)} fontSize="small"/>;
+                                    <CheckIcon className={classes.Icon} onClick={() => this.props.onUpdateTitle(this.state.boardId, this.props.board, this.state.title)} /> : 
+                                    <EditIcon className={classes.Icon} onClick={() => this.props.onEditBoard(this.state.boardId)} fontSize="small"/>;
             return (
             <div className={classes.Board}> 
-            {title}
-            {editToggleBtn}
+                <div className={classes.Header}>
+                        <div className={classes.Title}>{title}{editToggleBtn}</div>
+                </div>
             {
                 Object.keys(this.props.lists).map((key) => {
                 return <List list={this.props.lists[key]} key={key}></List>

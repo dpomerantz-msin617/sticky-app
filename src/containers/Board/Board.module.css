@@ -1,6 +1,19 @@
 .Board {
     background: border-box;
-    background-color: lightskyblue;
+    background-color:  #80bfff;
     position: absolute;
     width: 100%;
+}
+
+.Title {
+    width: 30%;
+    position: relative;
+}
+
+.Icon {
+    float: right;
+    margin-right: .2em;
+    margin-top: -1.1em;
+    position: relative;
+    z-index: 2;
 }
