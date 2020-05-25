@@ -12,8 +12,8 @@ const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.SET_DATA:
             const boards = Object.assign({}, [...action.data.boards]);
-            const lists = (action.data.lists) ? Object.assign({}, [...action.data.lists]) : {};
-            const notes = (action.data.notes) ? Object.assign({}, [...action.data.notes]) : {};
+            const lists = (action.data.lists) ? {...action.data.lists} : {};
+            const notes = (action.data.notes) ? {...action.data.notes} : {};
             return {
                 boards : {...boards},
                 lists: {...lists},

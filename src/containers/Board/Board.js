@@ -69,7 +69,7 @@ const mapStateToProps = state => {
             loaded: state.loaded
         }
     } else {
-        return null;
+        return state;
     }
 }
 
