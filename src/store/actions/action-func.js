@@ -1,8 +1,19 @@
 import * as actions from './actions';
 import axios from '../../axios-data';
+import {deactivateBoards} from '../../helpers/objectHelper';
+
+const url = 'https://sticky-note-organizer.firebaseio.com/data/';
+export const activateBoard = (boards, boardId) => {
+    let deactivatedBoards = deactivateBoards({...boards});
+    deactivatedBoards[boardId].active = true
+    return dispatch => axios.put(url + '/boards.json', deactivatedBoards).then(
+            dispatch({type: actions.ACTIVATE_BOARD, id: boardId})
+    ).catch(
+        dispatch(fetchDataFailed())
+    )
+};
 
 export const addList = (boardId, board) => {
-    const url = 'https://sticky-note-organizer.firebaseio.com/data/';
     const sampleListName = 'New List';
     return dispatch => axios.post(url + 'lists.json', {name: sampleListName} )
         .then( res => {
@@ -49,7 +60,6 @@ export const loadUpdateBoardTitle = (id, board, title) => {
 };
 
 export const addNote = (listId, list) => {
-    const url = 'https://sticky-note-organizer.firebaseio.com/data/';
     const sampleName = 'New Note'
     return dispatch => {
         axios.post(url+'notes.json', {name: sampleName}).then( res => {

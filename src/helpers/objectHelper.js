@@ -9,6 +9,8 @@ export function updateObject(state, id, propertyName, propertyValue){
     }
 }
 
+export const deactivateBoards = (boards) => Object.keys(boards).map(i => ({...boards[i], active: false}));
+
 export const getActiveBoard = (allIds, boards) => allIds.map(i => 
                                                     boards[i]).filter(b => 
                                                             b.active).pop();

@@ -55,14 +55,10 @@ class Board extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log('State', state);
     const boardIds = Object.keys(state.boards);
-    console.log('BoardIDs', boardIds);
     if(boardIds.length > 0){
         const activeBoard = getActiveBoard(boardIds, state.boards);
-        console.log('ActiveBoard', activeBoard);
         const board = {...activeBoard};
-        console.log('Active Lists: ', {...activeBoard.lists});
         const lists = [...activeBoard.lists].map(i => {
             return {...state.lists[i]};
           });

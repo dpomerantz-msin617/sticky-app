@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actions';
+import { deactivateBoards } from '../../helpers/objectHelper';
 
 const initialState = {
     boards: {},
@@ -19,6 +20,13 @@ const reducer = (state = initialState, action) => {
                 lists: {...lists},
                 notes: {...notes},
                 loaded: true
+            }
+        case actionTypes.ACTIVATE_BOARD:
+            let boardsToUpdate = deactivateBoards({...state.boards});
+            boardsToUpdate[action.id].active = true;
+            return {
+                ...state,
+                boards: {...boardsToUpdate}
             }
         case actionTypes.UPDATE_NOTE:
             console.log('updated note', action);
@@ -52,12 +60,12 @@ const reducer = (state = initialState, action) => {
             const updatedLists = {...state.lists,
                                  [action.listId]: {id: action.listId,
                                                    name: action.name}};
-            let boardsToUpdate = {...state.boards};
-            boardsToUpdate[action.boardId].lists = [...boardsToUpdate[action.boardId].lists,
+            let boardsToUpdateList = {...state.boards};
+            boardsToUpdateList[action.boardId].lists = [...boardsToUpdateList[action.boardId].lists,
                                                     action.listId];
             return {
                 ...state,
-                boards: {...boardsToUpdate},
+                boards: {...boardsToUpdateList},
                 lists: {...updatedLists}
             };
         case actionTypes.ADD_NOTE:
