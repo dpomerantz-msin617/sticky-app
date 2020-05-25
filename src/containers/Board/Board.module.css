@@ -2,7 +2,9 @@
     background: border-box;
     background-color:  #80bfff;
     position: absolute;
-    width: 100%;
+    left: 10%;
+    width: 90%;
+    padding: 2em;
 }
 
 .Title {

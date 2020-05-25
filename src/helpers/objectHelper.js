@@ -9,6 +9,10 @@ export function updateObject(state, id, propertyName, propertyValue){
     }
 }
 
+export const getActiveBoard = (allIds, boards) => allIds.map(i => 
+                                                    boards[i]).filter(b => 
+                                                            b.active).pop();
+
  export function removeItem(array, action) {
     return [...array.slice(0, action.index), ...array.slice(action.index + 1)]
   }

@@ -1,11 +1,19 @@
 import React from 'react';
 import * as actionTypes from '../../store/actions/actions';
 import { connect } from 'react-redux';
+import classes from './Sidebar.module.css';
 
 const Sidebar = (props) =>{
     console.log('SIDEBAR', props)
     return (
-        <div></div>
+        
+        <div className={classes.Sidebar}>
+        {
+            Object.keys(props.boards).map(i => {
+                return <h3 className={(props.boards[i].active) ? classes.Active : ''}>{props.boards[i].name}</h3>
+            })
+        }
+        </div>
     )
 };
 

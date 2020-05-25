@@ -9,6 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import List from '../List/List';
 import classes from './Board.module.css';
+import {getActiveBoard} from '../../helpers/objectHelper';
 
 class Board extends Component {
     constructor(props){
@@ -24,7 +25,6 @@ class Board extends Component {
       }
 
     updateTitle = event => {
-        console.log(event.target.value);
         this.setState({title: event.target.value});
     }
     render() {
@@ -56,14 +56,16 @@ class Board extends Component {
 
 const mapStateToProps = state => {
     console.log('State', state);
-    if(state.boards[0]){
-        const board = {...state.boards[0]};
-        const lists = Object.assign({}, [...board.lists].map((i, index) => {
+    const boardIds = Object.keys(state.boards);
+    console.log('BoardIDs', boardIds);
+    if(boardIds.length > 0){
+        const activeBoard = getActiveBoard(boardIds, state.boards);
+        console.log('ActiveBoard', activeBoard);
+        const board = {...activeBoard};
+        console.log('Active Lists: ', {...activeBoard.lists});
+        const lists = [...activeBoard.lists].map(i => {
             return {...state.lists[i]};
-          })
-        );
-        console.log(board);
-        console.log(lists)
+          });
         return {
             board: board,
             lists: lists,
