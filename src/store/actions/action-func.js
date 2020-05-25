@@ -13,6 +13,25 @@ export const activateBoard = (boards, boardId) => {
     )
 };
 
+export const addBoard = (boards) => {
+    const deactiveBoards = deactivateBoards({...boards});
+    const newBoard = {
+        active: true,
+        editing: true,
+        lists: [],
+        name: 'New Board'
+    };
+    return dispatch => axios.put(url + '/boards.json', deactiveBoards).then(
+        axios.post(url + '/boards.json', newBoard).then( res =>
+            dispatch({type: actions.ADD_BOARD, id: res.data.name, board: newBoard})
+        ).catch(
+        dispatch(fetchDataFailed())
+        )
+    ).catch(
+        dispatch(fetchDataFailed())
+    );
+};
+
 export const addList = (boardId, board) => {
     const sampleListName = 'New List';
     return dispatch => axios.post(url + 'lists.json', {name: sampleListName} )

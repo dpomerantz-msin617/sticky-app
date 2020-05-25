@@ -35,16 +35,16 @@ class Board extends Component {
             const editToggleBtn = (this.props.board.editing) ? 
                                     <CheckIcon className={classes.Icon} onClick={() => this.props.onUpdateTitle(this.state.boardId, this.props.board, this.state.title)} /> : 
                                     <EditIcon className={classes.Icon} onClick={() => this.props.onEditBoard(this.state.boardId)} fontSize="small"/>;
+            const lists = (this.props.lists) ?  Object.keys(this.props.lists).map((key) => {
+                                                return <List list={this.props.lists[key]} key={key}></List>
+                                            }) : <strong>You Can Add A List Here</strong>;
+
             return (
             <div className={classes.Board}> 
                 <div className={classes.Header}>
                         <div className={classes.Title}>{title}{editToggleBtn}</div>
                 </div>
-            {
-                Object.keys(this.props.lists).map((key) => {
-                return <List list={this.props.lists[key]} key={key}></List>
-                })
-            }
+            { lists }
             <AddIcon onClick={() => this.props.onAddList(this.state.boardId, this.props.board)}/>
             </div>
             );        
@@ -56,12 +56,14 @@ class Board extends Component {
 
 const mapStateToProps = state => {
     const boardIds = Object.keys(state.boards);
+    console.log(state);
     if(boardIds.length > 0){
         const activeBoard = getActiveBoard(boardIds, state.boards);
         const board = {...activeBoard};
-        const lists = [...activeBoard.lists].map(i => {
-            return {...state.lists[i]};
-          });
+        console.log('Activeboards:', activeBoard);
+        const lists = (activeBoard.lists) ? [...activeBoard.lists].map(i => {
+                            return {...state.lists[i]};
+                        }) : [];
         return {
             board: board,
             lists: lists,

@@ -2,6 +2,7 @@ import React from 'react';
 import * as actionFunctions from '../../store/actions/action-func';
 import { connect } from 'react-redux';
 import classes from './Sidebar.module.css';
+import AddIcon from '@material-ui/icons/Add';
 
 const Sidebar = (props) =>{
     console.log('SIDEBAR', props)
@@ -10,8 +11,7 @@ const Sidebar = (props) =>{
             props.activateBoard(props.boards, id);
         } 
     }
-    return (
-        
+    return (       
         <div className={classes.Sidebar}>
         {
             Object.keys(props.boards).map(i => {
@@ -23,19 +23,21 @@ const Sidebar = (props) =>{
                         </h3>
             })
         }
+        <AddIcon onClick={() => props.addBoard(props.boards)}/>
         </div>
     )
 };
 
 const mapStateToProps = state => {
     return {
-        boards: state.boards
+        boards: {...state.boards}
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        activateBoard: (boards, id) => dispatch(actionFunctions.activateBoard(boards, id))
+        activateBoard: (boards, id) => dispatch(actionFunctions.activateBoard(boards, id)),
+        addBoard: (boards) => dispatch(actionFunctions.addBoard(boards))
     }
 }
 

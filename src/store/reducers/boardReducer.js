@@ -28,6 +28,13 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 boards: {...boardsToUpdate}
             }
+        case actionTypes.ADD_BOARD:
+            let boardToDeactivate = deactivateBoards({...state.boards});
+            return {
+                ...state,
+                boards: {...boardToDeactivate},
+                        [action.id] : {...action.board}
+            };
         case actionTypes.UPDATE_NOTE:
             console.log('updated note', action);
             const noteIndex = state.notes.findIndex(n => n.id === action.note.id);
