@@ -52,14 +52,18 @@ export const addNote = (listId, list) => {
     const url = 'https://sticky-note-organizer.firebaseio.com/data/';
     const sampleName = 'New Note'
     return dispatch => {
-        axios.post(url+'notes.json', {name: sampleName})
-        .then( res => {
+        axios.post(url+'notes.json', {name: sampleName}).then( res => {
             const updatedList = {
                 ...list,
-                notes: [...list.notes, res.data.name]
+                notes: (list.notes) ? [...list.notes, res.data.name] : [res.data.name]
             };
-            axios.put(url+'lists/'+ listId +'.json', updatedList)
-                 .then( res2 => dispatch({ type: actions.ADD_NOTE, 
+            console.log('Add Note: ', list);
+            console.log('Add Note: ', listId);
+            console.log('Add Note: ', updatedList);
+
+            console.log('SUCCESS', updatedList);
+            axios.put(url+'lists/'+ listId +'.json', updatedList).then( 
+                res2 => dispatch({ type: actions.ADD_NOTE, 
                                            listId: listId, 
                                            id: res.data.name, 
                                            name: sampleName})

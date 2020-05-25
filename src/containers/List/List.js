@@ -21,7 +21,10 @@ const List = (props) => {
   
 const mapDispatchToProps = dispatch => {
     return {
-        onAddList: (list) => dispatch(actionFunc.addNote(list.id, list))
+        onAddList: (list) => {
+            console.log('List', list);
+            return dispatch(actionFunc.addNote(list.id, list));
+        }
     }
 }
 

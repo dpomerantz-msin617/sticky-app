@@ -41,7 +41,7 @@ class Board extends Component {
             {editToggleBtn}
             {
                 Object.keys(this.props.lists).map((key) => {
-                if(this.props.lists[key]) return <List list={this.props.lists[key]} key={key}></List>
+                return <List list={this.props.lists[key]} key={key}></List>
                 })
             }
             <AddIcon onClick={() => this.props.onAddList(this.state.boardId, this.props.board)}/>
@@ -58,7 +58,7 @@ const mapStateToProps = state => {
     if(state.boards[0]){
         const board = {...state.boards[0]};
         const lists = Object.assign({}, [...board.lists].map((i, index) => {
-            return {...state.lists[index]};
+            return {...state.lists[i]};
           })
         );
         console.log(board);

@@ -2,4 +2,9 @@
     width: 30%;
     background-color: beige;
     margin: 23px;
+    position: relative;
+    float: left;
+    min-width: 350px;
+    height: 450px;
+    overflow: scroll;
 }

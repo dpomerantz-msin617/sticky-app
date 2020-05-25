@@ -1,4 +1,6 @@
 .Board {
     background: border-box;
     background-color: lightskyblue;
+    position: absolute;
+    width: 100%;
 }

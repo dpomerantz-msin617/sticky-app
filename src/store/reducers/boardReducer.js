@@ -60,12 +60,14 @@ const reducer = (state = initialState, action) => {
                 boards: {...boardsToUpdate},
                 lists: {...updatedLists}
             };
-//@TODO MOVE TO LIST REDUCER
         case actionTypes.ADD_NOTE:
-            const noteList = {...state.notes, [action.id] : {name: action.name}}    
+            console.log('YOU GOT HERE', action);
+            const noteList = {...state.notes, [action.id] : {id : action.id, name: action.name}}    
             let listsToUpdate = {...state.lists};
-            listsToUpdate[action.listId].notes = [listsToUpdate[action.listId].notes,
-                                                  action.id]
+            listsToUpdate[action.listId].notes = 
+                            (listsToUpdate[action.listId].notes) ? [...listsToUpdate[action.listId].notes,
+                                                                    action.id] 
+                                                                    : [action.id];
             return {...state,
                     lists: {...listsToUpdate},
                     notes: {...noteList}
