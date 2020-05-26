@@ -29,11 +29,16 @@ const reducer = (state = initialState, action) => {
                 boards: {...boardsToUpdate}
             }
         case actionTypes.ADD_BOARD:
-            let boardToDeactivate = deactivateBoards({...state.boards});
+            let boardsToDeactivate = deactivateBoards({...state.boards});
+            console.log('Add Board boardsToDeactivate', boardsToDeactivate);
+            console.log('Add Board action', action);
             return {
                 ...state,
-                boards: {...boardToDeactivate},
-                        [action.id] : {...action.board}
+                boards: {...boardsToDeactivate,
+                        [action.id] : {...action.board,
+                                       id: action.id
+                                    }
+                        }
             };
         case actionTypes.UPDATE_NOTE:
             console.log('updated note', action);
@@ -51,18 +56,12 @@ const reducer = (state = initialState, action) => {
                 notes: [...notesToUpdate]
             };
         case actionTypes.EDIT_BOARD:
-            const editingBoards = updateBoards(state, action.id, 'editing', true);
-            return {
-                ...state,
-                boards: editingBoards
-            };
+            const stateWithEditingBoards = updateBoards(state, action.id, 'editing', true);
+            return { ...stateWithEditingBoards };
         case actionTypes.UPDATE_BOARD_TITLE:
-            let updatedBoards = updateBoards(state, action.id, 'title', action.title);
-            updatedBoards = updateBoards(state, action.id, 'editing', false);
-            return {
-                ...state,
-                boards: updatedBoards
-            };
+            let newState = updateBoards(state, action.id, 'name', action.name);
+            newState = updateBoards(newState, action.id, 'editing', false);
+            return { ...newState};
         case actionTypes.ADD_LIST:
             const updatedLists = {...state.lists,
                                  [action.listId]: {id: action.listId,
@@ -96,9 +95,11 @@ export function updateBoards(state, id, propertyName, propertyValue){
     let board = {...state.boards[id],
             [propertyName] : propertyValue
     }
-    return {
-        ...state.boards,
-        [id]: board
+    return {...state,
+            boards: {
+                ...state.boards,
+                [id]: board    
+            }
     }
 }
 

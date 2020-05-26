@@ -15,26 +15,29 @@ class Board extends Component {
     constructor(props){
         super(props);
         this.state = {
-            boardId: 0,
             title: ''
         };
     }
 
-    componentDidMount () {
-        this.props.onInitBoards();
-      }
+    componentWilReceiveProps () {
+        console.log('Props: ', this.props);
+        if(this.props.board){
+            this.setState({ title: this.props.board.name})
+        }
+    }
 
     updateTitle = event => {
         this.setState({title: event.target.value});
     }
+
     render() {
         if(this.props.loaded){
-            const title = <TextField fullWidth disabled={!this.props.board.editing}
+            const title = <TextField key={'board-'+this.props.board.id} fullWidth disabled={!this.props.board.editing}
                                                         label="Board Title" defaultValue={this.props.board.name}
                                                         onChange={this.updateTitle}/>;
             const editToggleBtn = (this.props.board.editing) ? 
-                                    <CheckIcon className={classes.Icon} onClick={() => this.props.onUpdateTitle(this.state.boardId, this.props.board, this.state.title)} /> : 
-                                    <EditIcon className={classes.Icon} onClick={() => this.props.onEditBoard(this.state.boardId)} fontSize="small"/>;
+                                    <CheckIcon className={classes.Icon} onClick={() => this.props.onUpdateTitle(this.props.board.id, this.props.board, this.state.title)} /> : 
+                                    <EditIcon className={classes.Icon} onClick={() => this.props.onEditBoard(this.props.board.id)} fontSize="small"/>;
             const lists = (this.props.lists) ?  Object.keys(this.props.lists).map((key) => {
                                                 return <List list={this.props.lists[key]} key={key}></List>
                                             }) : <strong>You Can Add A List Here</strong>;
@@ -45,7 +48,7 @@ class Board extends Component {
                         <div className={classes.Title}>{title}{editToggleBtn}</div>
                 </div>
             { lists }
-            <AddIcon onClick={() => this.props.onAddList(this.state.boardId, this.props.board)}/>
+            <AddIcon onClick={() => this.props.onAddList(this.props.board.id, this.props.board)}/>
             </div>
             );        
         } else {
@@ -76,7 +79,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onInitBoards: () => dispatch(actionFunctions.initBoards()),
         onUpdateTitle: (id, board, title) => dispatch(actionFunctions.loadUpdateBoardTitle(id, board, title)),
         onEditBoard: (id) => dispatch({type: actionTypes.EDIT_BOARD, id: id}),
         onAddList: (id, board) => dispatch(actionFunctions.addList(id, board))
