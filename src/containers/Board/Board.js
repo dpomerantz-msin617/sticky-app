@@ -25,30 +25,34 @@ class Board extends Component {
 
     render() {
         if(this.props.loaded){
-            const title = <TextField key={'board-'+this.props.board.id} fullWidth disabled={!this.props.board.editing}
-                                                        label="Board Title" defaultValue={this.props.board.name}
-                                                        onChange={this.updateTitle}/>;
+            const title = <TextField key={'board-'+this.props.board.id} label="Board Title"
+                                     fullWidth disabled={!this.props.board.editing}
+                                     defaultValue={this.props.board.name}
+                                     onChange={this.updateTitle}/>;
+            
             const editToggleBtn = (this.props.board.editing) ? 
                                     <CheckIcon className={classes.InputIcon} onClick={() => this.props.onUpdateTitle(this.props.board.id, this.props.board, this.state.title)} /> : 
-                                    <EditIcon className={classes.InputIcon} onClick={() => this.props.onEditBoard(this.props.board.id)} fontSize="small"/>;
-            const lists = (this.props.lists.length > 0) ?  Object.keys(this.props.lists).map((key) => {
+                                    <EditIcon  className={classes.InputIcon} onClick={() => this.props.onEditBoard(this.props.board.id)} fontSize="small"/>;
+            
+            const lists = (this.props.lists.length > 0) ?  
+                                    Object.keys(this.props.lists).map((key) => {
                                                 const myList = this.props.lists[key];
-                                                const myNotes = (myList.notes) ? [myList.notes.map(i =>
-                                                     this.props.notes[i]
-                                                    )] : [];
+                                                const myNotes = (myList.notes) ? 
+                                                        [myList.notes.map(i => 
+                                                            this.props.notes[i])] :
+                                                        [];
                                                 return <List list={myList} key={key} notes={myNotes}></List>
-                                            }) :
+                                    }) :
                                     <strong className={classes.AddListText}>You Can Add A List Here</strong>;
-
             return (
-            <div className={classes.Board}> 
-                <div className={classes.Header}>
-                        <div className={classes.Title}>{title}{editToggleBtn}</div>
+                <div className={classes.Board}> 
+                    <div className={classes.Header}>
+                            <div className={classes.Title}>{title}{editToggleBtn}</div>
+                    </div>
+                { lists }
+                <AddIcon className={classes.AddIcon} 
+                        onClick={() => this.props.onAddList(this.props.board.id, this.props.board)}/>
                 </div>
-            { lists }
-            <AddIcon className={classes.AddIcon} 
-                     onClick={() => this.props.onAddList(this.props.board.id, this.props.board)}/>
-            </div>
             );        
         } else {
             return <h2>LOADING...</h2>
@@ -60,14 +64,13 @@ const mapStateToProps = state => {
     const boardIds = Object.keys(state.boards);
     if(boardIds.length > 0){
         const activeBoard = getActiveBoard(boardIds, state.boards);
+        console.log('Activeboards:', activeBoard); //@todo remove, but still need for debugging
+
         const board = {...activeBoard};
-        console.log('Activeboards:', activeBoard);
-        const lists = (activeBoard.lists) ? [...activeBoard.lists].map(i => {
-                            return {...state.lists[i]};
-                        }) : [];
-        const notes = lists.map(i => {
-            return {...state.notes[i]}
-        });
+        const lists = (activeBoard.lists) ? 
+                        [...activeBoard.lists].map(i => {return {...state.lists[i]}; }) : 
+                        [];
+        const notes = lists.map(i => { return {...state.notes[i]} });
         return {
             board: board,
             lists: lists,

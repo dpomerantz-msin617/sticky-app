@@ -42,7 +42,6 @@ const reducer = (state = initialState, action) => {
             };
 
             case actionTypes.UPDATE_NOTE:
-            console.log('updated note', action);
             const noteIndex = state.notes.findIndex(n => n.id === action.note.id);
             let updatedNotes = [...state.notes];
             updatedNotes[noteIndex] = action.note;
@@ -95,13 +94,10 @@ const reducer = (state = initialState, action) => {
 };
 
 export function updateState(state, id, itemGroup, propertyName, propertyValue){
-    console.log('ItemGroup', itemGroup);
     let items = {...state[itemGroup]};
     let item = {...items[id],
             [propertyName] : propertyValue
     }
-    console.log('Lists', items);
-    console.log('List', item);
     return {...state,
             [itemGroup]: {
                 ...state[itemGroup],

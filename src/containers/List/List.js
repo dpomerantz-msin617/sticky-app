@@ -12,6 +12,7 @@ import * as actionFunc from '../../store/actions/action-func';
 const List = (props) => {
     const [editing, setEdit] = useState( false);
     const [titleText, setTitle] = useState('');
+    
     const updateListTitle = event => {
         setTitle(event.target.value);
     };
@@ -38,8 +39,10 @@ const List = (props) => {
 
 
     const addNoteIcon = <AddIcon onClick={() => props.onAddList(props.list)}/>;
-    const notes = (props.list.notes) ? <div> {props.list.notes.map((noteId, i) => 
-                                          <Note note={props.notes[noteId]} key={noteId}></Note>)}
+    const notes = (props.list.notes) ? <div> {props.list.notes.map((noteId, i) => {
+                                                const thisNote = props.notes[i];
+                                                return <Note note={thisNote} key={noteId}></Note>;
+                                            })}
                                             {addNoteIcon}
                                         </div> :
                                         <strong> {addNoteIcon} Add A Note </strong>;

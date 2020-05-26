@@ -3,9 +3,10 @@ import axios from '../../axios-data';
 import {deactivateBoards} from '../../helpers/objectHelper';
 
 const url = 'https://sticky-note-organizer.firebaseio.com/data';
+
 export const activateBoard = (boards, boardId) => {
     let deactivatedBoards = deactivateBoards({...boards});
-    deactivatedBoards[boardId].active = true
+    deactivatedBoards[boardId].active = true;
     return dispatch => axios.put(url + '/boards.json', deactivatedBoards).then(
             dispatch({type: actions.ACTIVATE_BOARD, id: boardId})
     ).catch(
@@ -37,7 +38,6 @@ export const addList = (boardId, board) => {
     const sampleListName = 'New List';
     return dispatch => axios.post(url + '/lists.json', {name: sampleListName} )
         .then( res => {
-            console.log('Res:', res);
             const updatedBoard = {
                 ...board,
                 lists: (board.lists) ? [...board.lists, res.data.name]: [res.data.name]
@@ -69,7 +69,6 @@ export const initBoards = () => {
 }
 
 export const loadUpdateTitle = (id, itemGroup, item, name) => {
-    console.log('loadUpdateTitle id', id);
     const updatedItem = {...item,
                           editing: false,
                           name: name};
@@ -77,7 +76,6 @@ export const loadUpdateTitle = (id, itemGroup, item, name) => {
     return dispatch => {
         axios.put(newUrl, updatedItem)
         .then( res => {
-            console.log('Results', res.data);
             dispatch({type: actions.UPDATE_TITLE, id: id, name: name, itemGroup: itemGroup});
         })
         .catch(error => {
@@ -88,30 +86,24 @@ export const loadUpdateTitle = (id, itemGroup, item, name) => {
 
 
 export const updateNote = (note) => {
-    console.log('Note: ', note);
-    return axios.put(url + '/Notes/' + note.id + '.json', note).then( res => {
-        console.log('Results: ' + res.data);
-        // dispatch({type: actions.UPDATE_NOTE, note: note});       
-    }
-    )
-    //.catch( err => 
-      //  dispatch(fetchDataFailed(err)))
+    return dispatch => {
+        axios.put(url + '/Notes/' + note.id + '.json', note).then( res => {
+            dispatch({type: actions.UPDATE_NOTE, note: note});       
+        })
+        .catch( err => 
+           dispatch(fetchDataFailed(err)))
+    } 
 };
 
 export const addNote = (listId, list) => {
     const sampleName = 'New Note'
     return dispatch => {
-        axios.post(url+'notes.json', {name: sampleName}).then( res => {
+        axios.post(url+'/notes.json', {name: sampleName}).then( res => {
             const updatedList = {
                 ...list,
                 notes: (list.notes) ? [...list.notes, res.data.name] : [res.data.name]
             };
-            console.log('Add Note: ', list);
-            console.log('Add Note: ', listId);
-            console.log('Add Note: ', updatedList);
-
-            console.log('SUCCESS', updatedList);
-            axios.put(url+'lists/'+ listId +'.json', updatedList).then( 
+            axios.put(url+'/lists/'+ listId +'.json', updatedList).then( 
                 res2 => dispatch({ type: actions.ADD_NOTE, 
                                            listId: listId, 
                                            id: res.data.name, 

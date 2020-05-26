@@ -31,7 +31,6 @@ const Sidebar = (props) =>{
 };
 
 const mapStateToProps = state => {
-    console.log('Sidebar state', state);
     return {
         boards: {...state.boards},
         loaded: true

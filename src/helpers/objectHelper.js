@@ -1,19 +1,6 @@
-
-export function updateObject(state, id, propertyName, propertyValue){
-    let item = {...state.boards[id],
-            [propertyName] : propertyValue
-    }
-    return {
-        ...state.boards,
-        [id]: item
-    }
-}
-
 export const deactivateBoards = (boards) => Object.keys(boards).map(i => ({...boards[i], active: false}));
 
 export const getActiveBoard = (allIds, boards) => {
-    console.log('AllIds', allIds);
-    console.log('AllIds Boards', boards);
     return allIds.map(i => 
                     boards[i]).filter(b => 
                             b.active).pop();}

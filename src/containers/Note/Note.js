@@ -5,8 +5,6 @@ import Aux from '../../hoc/aux-div';
 import {connect} from 'react-redux';
 
 import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CheckIcon from '@material-ui/icons/Check';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
@@ -19,14 +17,9 @@ class Note extends Component {
         description: '',
         showNoteModal: false
     };
+    
     editNoteClickHandler = (props) => {
-        console.log(props);
         this.setState({showNoteModal: true});
-    }
-    updateNote = (event) => {
-        event.preventDefault();
-        console.log(event);
-        this.props.onUpdateNote();
     }
     notEditing = () => {
         this.setState({showNoteModal:false});
@@ -38,18 +31,18 @@ class Note extends Component {
         e.preventDefault();
         this.props.updateNote(
             {...this.props.note,
-            title: this.state.title,
+            name: this.state.title,
             description: this.state.description}
         );
     }
 
     render() {
-      const noteModal = <form className={classes.Note} noValidate autoComplete="off" onSubmit={this.updateNote}>
-                        <TextField  id={'note-title'+this.state.note.id} fullWidth 
-                            label="Note Title" defaultValue={this.props.note.title}
+      const noteModal = <form className={classes.Note} noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+                        <TextField  id={'note-title'} fullWidth 
+                            label="Note Title" defaultValue={this.props.note?.name}
                             onChange={(event) => this.handleChange(event, 'title')}/>
-                        <TextField  id="standard-basic" fullWidth           
-                            label="Note Description:" defaultValue={this.props.note.description}
+                        <TextField  id="note-description" fullWidth           
+                            label="Note Description:" defaultValue={this.props.note?.description}
                             onChange={(event) => this.handleChange(event, 'description')}/>
                         <Button type="submit" variant="contained" color="primary">
                             Save
@@ -58,7 +51,7 @@ class Note extends Component {
     return (
         <Aux>
             <div className={classes.Note}>
-                <h3>{this.state.note.title}</h3>
+                <h3>{this.state.note?.name}</h3>
                 <EditIcon onClick={this.editNoteClickHandler} fontSize="small"/>
             </div>
             <Modal show={this.state.showNoteModal} modalClosed={this.notEditing}>
