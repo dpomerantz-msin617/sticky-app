@@ -59,6 +59,11 @@ const reducer = (state = initialState, action) => {
         case actionTypes.EDIT_BOARD:
             const stateWithEditingBoards = updateBoards(state, action.id, 'editing', true);
             return { ...stateWithEditingBoards };
+        case actionTypes.UPDATE_TITLE:
+                let newStateWithTitle = updateState(state, action.id, action.itemGroup, 'name', action.name);
+                newStateWithTitle = updateState(newStateWithTitle, action.id, action.itemGroup, 'editing', false);
+                console.log('New State With Title', newStateWithTitle);
+                return { ...newStateWithTitle};
         case actionTypes.UPDATE_BOARD_TITLE:
             let newState = updateBoards(state, action.id, 'name', action.name);
             newState = updateBoards(newState, action.id, 'editing', false);
@@ -103,6 +108,23 @@ export function updateBoards(state, id, propertyName, propertyValue){
             }
     }
 }
+
+export function updateState(state, id, itemGroup, propertyName, propertyValue){
+    console.log('ItemGroup', itemGroup);
+    let items = {...state[itemGroup]};
+    let item = {...items[id],
+            [propertyName] : propertyValue
+    }
+    console.log('Lists', items);
+    console.log('List', item);
+    return {...state,
+            [itemGroup]: {
+                ...state[itemGroup],
+                [id]: item    
+            }
+    }
+}
+
 
 export function insertItem(array, action) {
     return [

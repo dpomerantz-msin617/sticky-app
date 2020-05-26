@@ -13,3 +13,4 @@ export const SET_DATA = 'SET_DATA';
 export const FETCH_DATA_FAILED = 'FETCH_DATA_FAILED';
 
 export const ACTIVATE_BOARD = 'ACTIVATE_BOARD';
+export const UPDATE_TITLE = 'UPDATE_TITLE';

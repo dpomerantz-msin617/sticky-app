@@ -23,7 +23,6 @@ export const addBoard = (boards) => {
     };
     return dispatch => axios.put(url + '/boards.json', deactiveBoards).then(
         axios.post(url + '/boards.json', newBoard).then( res => {
-            console.log('Add Board Function', res);
             return dispatch({type: actions.ADD_BOARD, id: res.data.name, board: newBoard})
         }
         ).catch(
@@ -36,7 +35,6 @@ export const addBoard = (boards) => {
 
 export const addList = (boardId, board) => {
     const sampleListName = 'New List';
-    console.log('BoardID: ', boardId);
     return dispatch => axios.post(url + '/lists.json', {name: sampleListName} )
         .then( res => {
             console.log('Res:', res);
@@ -44,7 +42,6 @@ export const addList = (boardId, board) => {
                 ...board,
                 lists: (board.lists) ? [...board.lists, res.data.name]: [res.data.name]
             };
-            console.log('Updated Board: ', updatedBoard);
             axios.put(url + '/boards/'+ boardId + '.json', updatedBoard).then(
                 axios.put(url + '/lists/' + res.data.name + '.json', {id: res.data.name, name: sampleListName}).then(
                     dispatch({type: actions.ADD_LIST, boardId: boardId, listId: res.data.name, name: sampleListName})
@@ -70,6 +67,25 @@ export const initBoards = () => {
         });
     }
 }
+
+export const loadUpdateTitle = (id, itemGroup, item, name) => {
+    console.log('loadUpdateTitle id', id);
+    const updatedItem = {...item,
+                          editing: false,
+                          name: name};
+    const newUrl = url + '/' + itemGroup + '/' + id + '.json';
+    return dispatch => {
+        axios.put(newUrl, updatedItem)
+        .then( res => {
+            console.log('Results', res.data);
+            dispatch({type: actions.UPDATE_TITLE, id: id, name: name, itemGroup: itemGroup});
+        })
+        .catch(error => {
+            dispatch(fetchDataFailed);
+        });
+    }
+};
+
 
 export const loadUpdateBoardTitle = (id, board, name) => {
     const updatedBoard = {...board,
