@@ -38,8 +38,8 @@ const List = (props) => {
 
 
     const addNoteIcon = <AddIcon onClick={() => props.onAddList(props.list)}/>;
-    const notes = (props.list.notes) ? <div> {props.list.notes.map((note, i) => 
-                                          <Note note={note} key={i}></Note>)}
+    const notes = (props.list.notes) ? <div> {props.list.notes.map((noteId, i) => 
+                                          <Note note={props.notes[noteId]} key={noteId}></Note>)}
                                             {addNoteIcon}
                                         </div> :
                                         <strong> {addNoteIcon} Add A Note </strong>;

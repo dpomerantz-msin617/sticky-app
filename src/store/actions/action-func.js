@@ -23,7 +23,7 @@ export const addBoard = (boards) => {
     };
     return dispatch => axios.put(url + '/boards.json', deactiveBoards).then(
         axios.post(url + '/boards.json', newBoard).then( res => {
-            return dispatch({type: actions.ADD_BOARD, id: res.data.name, board: newBoard})
+            return dispatch({type: actions.ADD_BOARD, id: deactiveBoards.length, board: newBoard})
         }
         ).catch(
         dispatch(fetchDataFailed())
@@ -87,20 +87,15 @@ export const loadUpdateTitle = (id, itemGroup, item, name) => {
 };
 
 
-export const loadUpdateBoardTitle = (id, board, name) => {
-    const updatedBoard = {...board,
-                          editing: false,
-                          name: name};
-    const newUrl = url + '/boards/' + id + '.json';
-    return dispatch => {
-        axios.put(newUrl, updatedBoard)
-        .then( res => {
-            dispatch({type: actions.UPDATE_BOARD_TITLE, id: id, name: name});
-        })
-        .catch(error => {
-            dispatch(fetchDataFailed);
-        });
+export const updateNote = (note) => {
+    console.log('Note: ', note);
+    return axios.put(url + '/Notes/' + note.id + '.json', note).then( res => {
+        console.log('Results: ' + res.data);
+        // dispatch({type: actions.UPDATE_NOTE, note: note});       
     }
+    )
+    //.catch( err => 
+      //  dispatch(fetchDataFailed(err)))
 };
 
 export const addNote = (listId, list) => {
@@ -129,6 +124,7 @@ export const addNote = (listId, list) => {
         });
     }
 };
+
 
 export const fetchDataFailed = (error) => {
     return {

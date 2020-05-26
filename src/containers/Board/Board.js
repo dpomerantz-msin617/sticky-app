@@ -32,7 +32,11 @@ class Board extends Component {
                                     <CheckIcon className={classes.InputIcon} onClick={() => this.props.onUpdateTitle(this.props.board.id, this.props.board, this.state.title)} /> : 
                                     <EditIcon className={classes.InputIcon} onClick={() => this.props.onEditBoard(this.props.board.id)} fontSize="small"/>;
             const lists = (this.props.lists.length > 0) ?  Object.keys(this.props.lists).map((key) => {
-                                                return <List list={this.props.lists[key]} key={key}></List>
+                                                const myList = this.props.lists[key];
+                                                const myNotes = (myList.notes) ? [myList.notes.map(i =>
+                                                     this.props.notes[i]
+                                                    )] : [];
+                                                return <List list={myList} key={key} notes={myNotes}></List>
                                             }) :
                                     <strong className={classes.AddListText}>You Can Add A List Here</strong>;
 
@@ -54,7 +58,6 @@ class Board extends Component {
 
 const mapStateToProps = state => {
     const boardIds = Object.keys(state.boards);
-    console.log(state);
     if(boardIds.length > 0){
         const activeBoard = getActiveBoard(boardIds, state.boards);
         const board = {...activeBoard};
@@ -62,9 +65,13 @@ const mapStateToProps = state => {
         const lists = (activeBoard.lists) ? [...activeBoard.lists].map(i => {
                             return {...state.lists[i]};
                         }) : [];
+        const notes = lists.map(i => {
+            return {...state.notes[i]}
+        });
         return {
             board: board,
             lists: lists,
+            notes: notes,
             loaded: state.loaded
         }
     } else {

@@ -11,26 +11,30 @@ const Sidebar = (props) =>{
         } 
     }
     
-    return (       
-        <div className={classes.Sidebar}>
-        {
-            Object.keys(props.boards).map(i => {
-                return <h3 className={(props.boards[i].active) ? classes.Active : ''}
-                           onClick={() => clickedBoardHandler(props.boards[i], i)}
-                           key={i}
-                        >
-                            {props.boards[i].name}
-                        </h3>
-            })
-        }
-        <AddIcon onClick={() => props.addBoard(props.boards)}/>
-        </div>
-    )
+    if(props.loaded){  
+        return (     
+            <div className={classes.Sidebar}>
+                {
+                    Object.keys(props.boards).map(i => {
+                        return <h3 className={(props.boards[i].active) ? classes.Active : ''}
+                                onClick={() => clickedBoardHandler(props.boards[i], i)}
+                                key={i}
+                                >
+                                    {props.boards[i].name}
+                                </h3>
+                    })
+                }
+                <AddIcon onClick={() => props.addBoard(props.boards)}/>
+                </div>
+            )
+    }
 };
 
 const mapStateToProps = state => {
+    console.log('Sidebar state', state);
     return {
-        boards: {...state.boards}
+        boards: {...state.boards},
+        loaded: true
     }
 };
 
