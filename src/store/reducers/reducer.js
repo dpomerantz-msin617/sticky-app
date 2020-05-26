@@ -14,6 +14,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SET_DATA:
             console.log('Data: ', action);
             const boards = {...action.data.boards};
+            // const boards = Object.assign({}, [...action.data.boards]);
             const lists = (action.data.lists) ? {...action.data.lists} : {};
             const notes = (action.data.notes) ? {...action.data.notes} : {};
             return {
@@ -57,7 +58,9 @@ const reducer = (state = initialState, action) => {
                 notes: [...notesToUpdate]
             };
         case actionTypes.EDIT_BOARD:
-            const stateWithEditingBoards = updateBoards(state, action.id, 'editing', true);
+            const stateWithEditingBoards = updateState(state, action.id, 'boards', 'editing', true);
+            console.log('Edit', action);
+            console.log('Edit', stateWithEditingBoards);
             return { ...stateWithEditingBoards };
         case actionTypes.UPDATE_TITLE:
                 let newStateWithTitle = updateState(state, action.id, action.itemGroup, 'name', action.name);

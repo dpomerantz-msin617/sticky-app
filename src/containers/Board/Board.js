@@ -19,12 +19,6 @@ class Board extends Component {
         };
     }
 
-    // componentWilReceiveProps () {
-    //     if(this.props.board){
-    //         this.setState({ title: this.props.board.name})
-    //     }
-    // }
-
     updateTitle = event => {
         this.setState({title: event.target.value});
     }
@@ -80,7 +74,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onUpdateTitle: (id, board, title) => dispatch(actionFunctions.loadUpdateBoardTitle(id, board, title)),
+        onUpdateTitle: (id, board, title) => dispatch(actionFunctions.loadUpdateTitle(id, 'boards', board, title)),
         onEditBoard: (id) => dispatch({type: actionTypes.EDIT_BOARD, id: id}),
         onAddList: (id, board) => dispatch(actionFunctions.addList(id, board))
     }
