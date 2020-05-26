@@ -19,12 +19,11 @@ class Board extends Component {
         };
     }
 
-    componentWilReceiveProps () {
-        console.log('Props: ', this.props);
-        if(this.props.board){
-            this.setState({ title: this.props.board.name})
-        }
-    }
+    // componentWilReceiveProps () {
+    //     if(this.props.board){
+    //         this.setState({ title: this.props.board.name})
+    //     }
+    // }
 
     updateTitle = event => {
         this.setState({title: event.target.value});
@@ -36,11 +35,12 @@ class Board extends Component {
                                                         label="Board Title" defaultValue={this.props.board.name}
                                                         onChange={this.updateTitle}/>;
             const editToggleBtn = (this.props.board.editing) ? 
-                                    <CheckIcon className={classes.Icon} onClick={() => this.props.onUpdateTitle(this.props.board.id, this.props.board, this.state.title)} /> : 
-                                    <EditIcon className={classes.Icon} onClick={() => this.props.onEditBoard(this.props.board.id)} fontSize="small"/>;
-            const lists = (this.props.lists) ?  Object.keys(this.props.lists).map((key) => {
+                                    <CheckIcon className={classes.InputIcon} onClick={() => this.props.onUpdateTitle(this.props.board.id, this.props.board, this.state.title)} /> : 
+                                    <EditIcon className={classes.InputIcon} onClick={() => this.props.onEditBoard(this.props.board.id)} fontSize="small"/>;
+            const lists = (this.props.lists.length > 0) ?  Object.keys(this.props.lists).map((key) => {
                                                 return <List list={this.props.lists[key]} key={key}></List>
-                                            }) : <strong>You Can Add A List Here</strong>;
+                                            }) :
+                                    <strong className={classes.AddListText}>You Can Add A List Here</strong>;
 
             return (
             <div className={classes.Board}> 
@@ -48,7 +48,8 @@ class Board extends Component {
                         <div className={classes.Title}>{title}{editToggleBtn}</div>
                 </div>
             { lists }
-            <AddIcon onClick={() => this.props.onAddList(this.props.board.id, this.props.board)}/>
+            <AddIcon className={classes.AddIcon} 
+                     onClick={() => this.props.onAddList(this.props.board.id, this.props.board)}/>
             </div>
             );        
         } else {

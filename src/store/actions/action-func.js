@@ -2,11 +2,11 @@ import * as actions from './actions';
 import axios from '../../axios-data';
 import {deactivateBoards} from '../../helpers/objectHelper';
 
-const url = 'https://sticky-note-organizer.firebaseio.com/data/';
+const url = 'https://sticky-note-organizer.firebaseio.com/data';
 export const activateBoard = (boards, boardId) => {
     let deactivatedBoards = deactivateBoards({...boards});
     deactivatedBoards[boardId].active = true
-    return dispatch => axios.put(url + 'boards.json', deactivatedBoards).then(
+    return dispatch => axios.put(url + '/boards.json', deactivatedBoards).then(
             dispatch({type: actions.ACTIVATE_BOARD, id: boardId})
     ).catch(
         dispatch(fetchDataFailed())
@@ -21,8 +21,8 @@ export const addBoard = (boards) => {
         lists: [],
         name: 'New Board'
     };
-    return dispatch => axios.put(url + 'boards.json', deactiveBoards).then(
-        axios.post(url + 'boards.json', newBoard).then( res => {
+    return dispatch => axios.put(url + '/boards.json', deactiveBoards).then(
+        axios.post(url + '/boards.json', newBoard).then( res => {
             console.log('Add Board Function', res);
             return dispatch({type: actions.ADD_BOARD, id: res.data.name, board: newBoard})
         }
@@ -36,14 +36,21 @@ export const addBoard = (boards) => {
 
 export const addList = (boardId, board) => {
     const sampleListName = 'New List';
-    return dispatch => axios.post(url + 'lists.json', {name: sampleListName} )
+    console.log('BoardID: ', boardId);
+    return dispatch => axios.post(url + '/lists.json', {name: sampleListName} )
         .then( res => {
+            console.log('Res:', res);
             const updatedBoard = {
                 ...board,
-                lists: [...board.lists, res.data.name]
+                lists: (board.lists) ? [...board.lists, res.data.name]: [res.data.name]
             };
-            axios.put(url + 'boards/'+boardId + '.json', updatedBoard).then(
-                dispatch({type: actions.ADD_LIST, boardId: boardId, listId: res.data.name, name: sampleListName})
+            console.log('Updated Board: ', updatedBoard);
+            axios.put(url + '/boards/'+ boardId + '.json', updatedBoard).then(
+                axios.put(url + '/lists/' + res.data.name + '.json', {id: res.data.name, name: sampleListName}).then(
+                    dispatch({type: actions.ADD_LIST, boardId: boardId, listId: res.data.name, name: sampleListName})
+                ).catch(
+                    dispatch(fetchDataFailed())
+                )
             ).catch(
                 dispatch(fetchDataFailed())
         )})
@@ -54,7 +61,7 @@ export const addList = (boardId, board) => {
 
 export const initBoards = () => {
     return dispatch => {
-        axios.get('https://sticky-note-organizer.firebaseio.com/data.json')
+        axios.get(url + '.json')
         .then( res => {
             dispatch({type: actions.SET_DATA, data: res.data});
         })
@@ -68,7 +75,7 @@ export const loadUpdateBoardTitle = (id, board, name) => {
     const updatedBoard = {...board,
                           editing: false,
                           name: name};
-    const newUrl = 'https://sticky-note-organizer.firebaseio.com/data/boards/' + id+ '.json';
+    const newUrl = url + '/boards/' + id + '.json';
     return dispatch => {
         axios.put(newUrl, updatedBoard)
         .then( res => {

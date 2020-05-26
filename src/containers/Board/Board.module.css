@@ -4,6 +4,7 @@
     position: absolute;
     left: 10%;
     width: 90%;
+    min-height: 100%;
     padding: 2em;
 }
 
@@ -12,10 +13,18 @@
     position: relative;
 }
 
-.Icon {
+.InputIcon {
     float: right;
     margin-right: .2em;
     margin-top: -1.1em;
     position: relative;
     z-index: 2;
+}
+
+.AddIcon {
+    float: left;
+}
+
+.AddListText {
+    line-height: 24px;    
 }

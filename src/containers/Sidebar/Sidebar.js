@@ -5,12 +5,12 @@ import classes from './Sidebar.module.css';
 import AddIcon from '@material-ui/icons/Add';
 
 const Sidebar = (props) =>{
-    console.log('SIDEBAR', props)
     const clickedBoardHandler = (clickedBoard, id) => {
         if (!clickedBoard.active){
             props.activateBoard(props.boards, id);
         } 
     }
+    
     return (       
         <div className={classes.Sidebar}>
         {
