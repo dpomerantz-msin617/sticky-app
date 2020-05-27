@@ -10,6 +10,7 @@ import Note from '../Note/Note';
 import * as actionFunc from '../../store/actions/action-func';
 
 const List = (props) => {
+    console.log('List Props', props);
     const [editing, setEdit] = useState( false);
     const [titleText, setTitle] = useState('');
     
@@ -39,9 +40,8 @@ const List = (props) => {
 
 
     const addNoteIcon = <AddIcon onClick={() => props.onAddList(props.list)}/>;
-    const notes = (props.list.notes) ? <div> {props.list.notes.map((noteId, i) => {
-                                                const thisNote = props.notes[i];
-                                                return <Note note={thisNote} key={noteId}></Note>;
+    const notes = (props.list.notes) ? <div> {props.list.notes.map((note, i) => {
+                                                return <Note note={note} key={note.id}></Note>;
                                             })}
                                             {addNoteIcon}
                                         </div> :

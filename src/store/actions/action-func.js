@@ -87,7 +87,7 @@ export const loadUpdateTitle = (id, itemGroup, item, name) => {
 
 export const updateNote = (note) => {
     return dispatch => {
-        axios.put(url + '/Notes/' + note.id + '.json', note).then( res => {
+        axios.put(url + '/notes/' + note.id + '.json', note).then( res => {
             dispatch({type: actions.UPDATE_NOTE, note: note});       
         })
         .catch( err => 
@@ -101,6 +101,7 @@ export const addNote = (listId, list) => {
         axios.post(url+'/notes.json', {name: sampleName}).then( res => {
             const updatedList = {
                 ...list,
+                id: listId,
                 notes: (list.notes) ? [...list.notes, res.data.name] : [res.data.name]
             };
             axios.put(url+'/lists/'+ listId +'.json', updatedList).then( 

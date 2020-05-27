@@ -25,6 +25,7 @@ class Board extends Component {
 
     render() {
         if(this.props.loaded){
+            console.log('Board: ', this.props);
             const title = <TextField key={'board-'+this.props.board.id} label="Board Title"
                                      fullWidth disabled={!this.props.board.editing}
                                      defaultValue={this.props.board.name}
@@ -35,13 +36,17 @@ class Board extends Component {
                                     <EditIcon  className={classes.InputIcon} onClick={() => this.props.onEditBoard(this.props.board.id)} fontSize="small"/>;
             
             const lists = (this.props.lists.length > 0) ?  
-                                    Object.keys(this.props.lists).map((key) => {
-                                                const myList = this.props.lists[key];
+                                    [...this.props.lists].map((listId, index) => {
+                                                const myList = this.props.lists[index];
                                                 const myNotes = (myList.notes) ? 
-                                                        [myList.notes.map(i => 
-                                                            this.props.notes[i])] :
-                                                        [];
-                                                return <List list={myList} key={key} notes={myNotes}></List>
+                                                        myList.notes.map((noteId) => {
+                                                            const mappedNote = this.props.notes.find(n => n.id === noteId);
+                                                            return {...mappedNote};
+                                                        }) : [];
+                                                const listWithNotes = {...myList,
+                                                                        notes: [...myNotes]
+                                                                    };
+                                                        return <List list={listWithNotes} key={myList.id}></List>
                                     }) :
                                     <strong className={classes.AddListText}>You Can Add A List Here</strong>;
             return (
@@ -64,13 +69,17 @@ const mapStateToProps = state => {
     const boardIds = Object.keys(state.boards);
     if(boardIds.length > 0){
         const activeBoard = getActiveBoard(boardIds, state.boards);
-        console.log('Activeboards:', activeBoard); //@todo remove, but still need for debugging
-
         const board = {...activeBoard};
         const lists = (activeBoard.lists) ? 
                         [...activeBoard.lists].map(i => {return {...state.lists[i]}; }) : 
                         [];
-        const notes = lists.map(i => { return {...state.notes[i]} });
+        const notes = lists.map(list => list.notes)
+                           .map(noteId => state.notes[noteId]);
+
+        console.log('Activeboards:', activeBoard); //@todo remove, but still need for debugging
+        console.log('ActiveLists:', lists); //@todo remove, but still need for debugging
+        console.log('ActiveNotes:', notes); //@todo remove, but still need for debugging
+
         return {
             board: board,
             lists: lists,

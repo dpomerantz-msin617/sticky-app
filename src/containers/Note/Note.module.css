@@ -4,7 +4,19 @@
     min-height: 6em;
 }
 
-.Note h3{
+.Note h3 {
+    margin: 0.6em auto;
+}
+
+.Note h3, .Note small{
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+}
+
+.EditIcon {
+    float: right;
     position: relative;
-    float: left;
+    bottom: 0px;
+    padding-right: 0.5em;
 }

@@ -13,10 +13,16 @@ import * as actionFunc from '../../store/actions/action-func';
 
 class Note extends Component {
     state = {
-        title : '',
+        name : '',
         description: '',
         showNoteModal: false
     };
+
+    componentDidMount () {
+        console.log('Note Props', this.props);
+        const thisNote = (this.props.note) ? this.props.note : this.state;
+        this.setState({...thisNote});
+      }
     
     editNoteClickHandler = (props) => {
         this.setState({showNoteModal: true});
@@ -26,12 +32,13 @@ class Note extends Component {
     }
     handleChange(e, fieldName){
         this.setState({[fieldName]: e.target.value});
+        console.log('NOTE', this.props);
     }
     handleSubmit(e) {
         e.preventDefault();
         this.props.updateNote(
             {...this.props.note,
-            name: this.state.title,
+            name: this.state.name,
             description: this.state.description}
         );
     }
@@ -51,8 +58,10 @@ class Note extends Component {
     return (
         <Aux>
             <div className={classes.Note}>
-                <h3>{this.state.note?.name}</h3>
-                <EditIcon onClick={this.editNoteClickHandler} fontSize="small"/>
+                <h3>{this.state.name}</h3>
+                <small>{this.state.description}</small>
+                <EditIcon className={classes.EditIcon}
+                          onClick={this.editNoteClickHandler} fontSize="small"/>
             </div>
             <Modal show={this.state.showNoteModal} modalClosed={this.notEditing}>
                     {noteModal}
