@@ -42,9 +42,8 @@ const reducer = (state = initialState, action) => {
             };
 
             case actionTypes.UPDATE_NOTE:
-            const noteIndex = state.notes.findIndex(n => n.id === action.note.id);
-            let updatedNotes = [...state.notes];
-            updatedNotes[noteIndex] = action.note;
+            let updatedNotes = {...state.notes};
+            updatedNotes[action.note.id] = {...action.note};
             return {
                 ...state,
                 notes: updatedNotes

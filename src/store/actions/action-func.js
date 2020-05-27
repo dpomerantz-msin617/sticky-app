@@ -87,7 +87,8 @@ export const loadUpdateTitle = (id, itemGroup, item, name) => {
 
 export const updateNote = (note) => {
     return dispatch => {
-        axios.put(url + '/notes/' + note.id + '.json', note).then( res => {
+        const updateUrl = url + '/notes/' + note.id + '.json';
+        axios.put(updateUrl, note).then( res => {
             dispatch({type: actions.UPDATE_NOTE, note: note});       
         })
         .catch( err => 
@@ -105,10 +106,17 @@ export const addNote = (listId, list) => {
                 notes: (list.notes) ? [...list.notes, res.data.name] : [res.data.name]
             };
             axios.put(url+'/lists/'+ listId +'.json', updatedList).then( 
-                res2 => dispatch({ type: actions.ADD_NOTE, 
-                                           listId: listId, 
-                                           id: res.data.name, 
-                                           name: sampleName})
+                res2 => {
+                    const noteWithID = {id: res.data.name, name: sampleName};                    
+                    axios.put(url+'/notes/'+ res.data.name + '.json', noteWithID).then(
+                        dispatch({ type: actions.ADD_NOTE, 
+                            listId: listId, 
+                            id: res.data.name, 
+                            name: sampleName})    
+                    ).catch(
+                        dispatch(fetchDataFailed)
+                    )
+                }
             )
             .catch( error2 => dispatch(fetchDataFailed))
         })

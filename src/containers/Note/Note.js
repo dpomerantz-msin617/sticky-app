@@ -32,22 +32,19 @@ class Note extends Component {
     }
     handleChange(e, fieldName){
         this.setState({[fieldName]: e.target.value});
-        console.log('NOTE', this.props);
     }
-    handleSubmit(e) {
+    handleSubmit(e, note) {
         e.preventDefault();
-        this.props.updateNote(
-            {...this.props.note,
+        this.props.updateNote({...note,
             name: this.state.name,
-            description: this.state.description}
-        );
-    }
+            description: this.state.description});
+        }
 
     render() {
-      const noteModal = <form className={classes.Note} noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+      const noteModal = <form className={classes.Note} noValidate autoComplete="off" onSubmit={(event) =>this.handleSubmit(event, this.props.note)}>
                         <TextField  id={'note-title'} fullWidth 
                             label="Note Title" defaultValue={this.props.note?.name}
-                            onChange={(event) => this.handleChange(event, 'title')}/>
+                            onChange={(event) => this.handleChange(event, 'name')}/>
                         <TextField  id="note-description" fullWidth           
                             label="Note Description:" defaultValue={this.props.note?.description}
                             onChange={(event) => this.handleChange(event, 'description')}/>
