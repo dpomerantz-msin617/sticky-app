@@ -14,3 +14,9 @@
 .Active {
     background-color:  #7070db;
 }
+
+@media (min-width: 800px) {
+    .Sidebar {
+        
+    }
+}

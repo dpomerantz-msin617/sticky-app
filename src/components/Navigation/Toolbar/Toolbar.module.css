@@ -4,7 +4,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #703B09;
+    background-color: midnightblue;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -17,8 +17,8 @@
     height: 100%;
 }
 
-.Logo {
-    height: 80%;
+.Toolbar h2 {
+    color: white
 }
 
 @media (max-width: 499px) {

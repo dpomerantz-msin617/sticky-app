@@ -68,6 +68,7 @@ class Board extends Component {
 const mapStateToProps = state => {
     const boardIds = Object.keys(state.boards);
     if(boardIds.length > 0){
+        console.log('State', state);
         const activeBoard = getActiveBoard(boardIds, state.boards);
         const board = {...activeBoard};
         const lists = (activeBoard.lists) ? 
